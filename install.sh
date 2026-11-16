@@ -835,6 +835,9 @@ install_version() {
   else
     say "  Open it from your app menu, or run: $( [ "$fmt" = appimage ] && echo "$APP_NAME" || echo "$BIN_NAME")"
   fi
+  if [ "$fmt" = appimage ]; then
+    warn "The AppImage has no H.264 video decoder, so most videos won't play. For video, install the .deb or .rpm package (--format deb / --format rpm)."
+  fi
 }
 
 action_install() {
