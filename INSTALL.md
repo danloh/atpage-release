@@ -22,7 +22,7 @@ The script picks the right build for your system and CPU (x64 or ARM64). Before 
 |---|---|---|
 | Debian, Ubuntu, Mint, … | `.deb` package (via `apt`, asks for your password) | `/usr/bin/atpage-client` |
 | Fedora, openSUSE, RHEL, … | `.rpm` package (via `dnf`/`zypper`/`yum`) | `/usr/bin/atpage-client` |
-| Other Linux (or `--format appimage`) | AppImage, per user, no password needed (videos don't play, see [Troubleshooting](#video-in-the-appimage)) | `~/.local/share/atpage/` |
+| Other Linux (or `--format appimage`) | AppImage, per user, no password needed | `~/.local/share/atpage/` |
 | macOS 11+ (Apple silicon or Intel) | `atpage.app` | `/Applications` (or `~/Applications`) |
 | Windows 10/11 (x64 or ARM64) | per-user installer, no admin needed | `%LOCALAPPDATA%\atpage` |
 
@@ -95,8 +95,7 @@ curl -fsSL https://raw.githubusercontent.com/danloh/atpage-release/main/install.
 - **macOS says the app is damaged or can't be opened.** These builds are not code-signed yet. Run `--repair`, which clears the quarantine flag, or right-click the app and choose *Open*.
 - **Linux: the AppImage doesn't start.** Install FUSE 2: `sudo apt install libfuse2` (Ubuntu 24.04+: `libfuse2t64`). Alternatively, install the `.deb` or `.rpm` with `--format deb` or `--format rpm`.
 - **Linux: blank or white window** (common with NVIDIA drivers). Start atpage with `WEBKIT_DISABLE_DMABUF_RENDERER=1 atpage-client`.
-- **Linux: videos don't play** (deb/rpm). Install the GStreamer plugins: `gstreamer1.0-plugins-good`, `gstreamer1.0-plugins-bad` and `gstreamer1.0-libav` on Debian/Ubuntu (Fedora: `gstreamer1-plugins-good`, `gstreamer1-plugins-bad-free`, `gstreamer1-plugin-libav`).
-- **Linux: videos don't play in the AppImage.** <a id="video-in-the-appimage"></a>The AppImage does not include an H.264 video decoder (for licensing reasons), so most videos cannot play in it. Install the `.deb` or `.rpm` package instead (`--format deb` / `--format rpm`), which uses your system's codecs (see the previous item). Everything else works the same in the AppImage.
+- **Linux: videos don't play** (deb/rpm). <a id="linux-video-codecs"></a>The `.deb` and `.rpm` play video with your system's GStreamer, which needs H.264 and AAC decoders. Debian/Ubuntu: `sudo apt install gstreamer1.0-libav gstreamer1.0-plugins-good gstreamer1.0-plugins-bad`. Fedora: `sudo dnf install gstreamer1-plugins-good gstreamer1-plugins-bad-free gstreamer1-plugin-libav gstreamer1-plugin-openh264` (or RPM Fusion's codec packages). Restart atpage afterwards. The AppImage brings its own decoders.
 - **Windows: blank window.** Make sure the WebView2 runtime is installed (`-Troubleshoot` shows its version), or set `WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--disable-gpu`.
 - **Start fresh.** Run `--uninstall --purge`, then install again. Your posts and account live on your PDS and are not affected.
 
